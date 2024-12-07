@@ -1,0 +1,27 @@
+def findLineDoToggleRange(line):
+    doIndexes = [0]
+    dontIndexes = []
+    for i in range(len(line)):
+        if line[i:i+4] == "do()":
+            doIndexes.append(i)
+        elif line[i:i+7] == "don't()":
+            dontIndexes.append(i)
+    rangePairs = [[0,dontIndexes[0]]]  
+    maxStart = doIndexes.pop(0)
+    maxStop = dontIndexes.pop(0)
+    while len(dontIndexes) > 0 and len(doIndexes) > 0:
+        if doIndexes[0] < maxStop:
+            doIndexes.pop(0)
+        else:
+            maxStart = doIndexes.pop(0)
+            while True:
+                if dontIndexes[0] < maxStart:
+                    dontIndexes.pop()
+                else:
+                    maxStop = dontIndexes.pop()
+                    rangePairs.append([maxStart,maxStop])
+                    break
+    return rangePairs
+
+
+print(findLineDoToggleRange("01234do()901234do()901don't()90do()56don't()don't()"))
